@@ -158,11 +158,31 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
         <div className="car-card bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
           <h3 className="text-lg font-bold text-foreground mb-4">پیشنهاد خودرو۴۵</h3>
           
-          <div className="text-center mb-6">
-            <div className="text-3xl font-bold text-primary mb-2 persian-numbers">
-              {formatPrice(estimatedPrice.min)} - {formatPrice(estimatedPrice.max)}
+          {/* Price Range Bar */}
+          <div className="mb-6">
+            <div className="relative h-16 bg-border rounded-xl overflow-hidden">
+              {/* Min Price (Right side in RTL) */}
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                <div className="persian-numbers">{formatPrice(estimatedPrice.min)}</div>
+                <div className="text-xs">حداقل</div>
+              </div>
+              
+              {/* Max Price (Left side in RTL) */}
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                <div className="persian-numbers">{formatPrice(estimatedPrice.max)}</div>
+                <div className="text-xs">حداکثر</div>
+              </div>
+              
+              {/* Center Orange Section */}
+              <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 mx-20 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="text-xs font-medium">قیمت تخمینی خودروی شما</div>
+                  <div className="text-sm font-bold persian-numbers">
+                    {formatPrice(Math.round((estimatedPrice.min + estimatedPrice.max) / 2))} تومان
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="text-sm text-muted-foreground">تومان</div>
           </div>
 
           <div className="space-y-4 mb-6">
