@@ -1,42 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Persian RTL Car Exchange Platform Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Persian Car Exchange Color Palette */
+    --background: 0 0% 97%;
+    --foreground: 218 27% 19%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 218 27% 19%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 218 27% 19%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary Orange */
+    --primary: 25 100% 59%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 25 100% 54%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Dark Gray */
+    --secondary: 218 27% 19%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Light Gray */
+    --muted: 216 13% 40%;
+    --muted-foreground: 0 0% 95%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Very Light Gray */
+    --accent: 214 20% 96%;
+    --accent-foreground: 218 27% 19%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success Green */
+    --success: 145 63% 42%;
+    --success-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Danger Red */
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    /* Border and Input */
+    --border: 214 20% 90%;
+    --input: 214 20% 96%;
+    --ring: 25 100% 59%;
+
+    /* Car Condition Colors */
+    --damage-minor: 214 100% 77%;
+    --damage-paint: 25 100% 59%;
+    --damage-replace: 4 90% 58%;
+    --damage-healthy: 145 63% 42%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(25 100% 59%), hsl(25 100% 54%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(214 20% 98%));
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -99,7 +121,80 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    direction: rtl;
+    font-family: 'IRANSans', 'Vazir', 'Inter', sans-serif;
+  }
+
   body {
     @apply bg-background text-foreground;
+    direction: rtl;
+  }
+
+  /* Persian number formatting */
+  .persian-numbers {
+    font-feature-settings: "tnum" on, "lnum" on;
+  }
+}
+
+@layer components {
+  /* RTL-specific utilities */
+  .rtl {
+    direction: rtl;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+
+  /* Car condition color classes */
+  .damage-minor {
+    @apply bg-[hsl(var(--damage-minor))] text-white;
+  }
+  
+  .damage-paint {
+    @apply bg-[hsl(var(--damage-paint))] text-white;
+  }
+  
+  .damage-replace {
+    @apply bg-[hsl(var(--damage-replace))] text-white;
+  }
+  
+  .damage-healthy {
+    @apply bg-[hsl(var(--damage-healthy))] text-white;
+  }
+
+  /* Persian car platform specific components */
+  .progress-step {
+    @apply relative flex items-center justify-center w-10 h-10 rounded-full border-2 border-border bg-background transition-all duration-300;
+  }
+
+  .progress-step.active {
+    @apply border-primary bg-primary text-primary-foreground;
+  }
+
+  .progress-step.completed {
+    @apply border-success bg-success text-success-foreground;
+  }
+
+  .car-card {
+    @apply bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .car-card:hover {
+    @apply border-primary/20 shadow-lg;
+  }
+
+  /* Persian button variants */
+  .btn-primary {
+    @apply bg-[hsl(var(--gradient-primary))] text-primary-foreground px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:scale-[1.02];
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:bg-secondary/90;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary bg-transparent px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
   }
 }
