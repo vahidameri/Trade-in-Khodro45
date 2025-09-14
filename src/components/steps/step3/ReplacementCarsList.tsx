@@ -1,6 +1,11 @@
 import { useState } from 'react';
-import { Edit3, Heart, BarChart3, Star } from 'lucide-react';
+import { Edit3, Heart, BarChart3, Star, X } from 'lucide-react';
 import { CarData, ReplacementCar } from '../../../types/car';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import car1 from '../../../assets/car1.jpg';
+import car2 from '../../../assets/car2.jpg';
+import car3 from '../../../assets/car3.jpg';
 
 interface ReplacementCarsListProps {
   userCar: CarData;
@@ -16,7 +21,7 @@ const sampleCars: ReplacementCar[] = [
     year: 1402,
     price: 950000000,
     mileage: 45000,
-    image: '/api/placeholder/300/200',
+    image: car1,
     difference: 30000000,
     hasOffer: true
   },
@@ -27,7 +32,7 @@ const sampleCars: ReplacementCar[] = [
     year: 1401,
     price: 880000000,
     mileage: 52000,
-    image: '/api/placeholder/300/200',
+    image: car2,
     difference: -40000000
   },
   {
@@ -37,7 +42,7 @@ const sampleCars: ReplacementCar[] = [
     year: 1402,
     price: 1020000000,
     mileage: 38000,
-    image: '/api/placeholder/300/200',
+    image: car3,
     difference: 100000000
   }
 ];
@@ -47,6 +52,7 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
   const [selectedBrand, setSelectedBrand] = useState('');
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [comparing, setComparing] = useState<Set<string>>(new Set());
+  const [showCompareModal, setShowCompareModal] = useState(false);
 
   const formatPrice = (price: number) => price.toLocaleString('fa-IR');
   const formatMileage = (mileage: number) => mileage.toLocaleString('fa-IR');
@@ -73,6 +79,15 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
       }
       return newComparing;
     });
+  };
+
+  const getComparingCars = () => {
+    return sampleCars.filter(car => comparing.has(car.id));
+  };
+
+  const clearComparison = () => {
+    setComparing(new Set());
+    setShowCompareModal(false);
   };
 
   return (
@@ -152,9 +167,11 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               <div key={car.id} className="car-card group cursor-pointer" onClick={() => onCarSelect(car.id)}>
                 {/* Car Image */}
                 <div className="aspect-video bg-accent rounded-lg mb-4 overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                    <Star className="w-12 h-12 text-muted-foreground" />
-                  </div>
+                  <img 
+                    src={car.image} 
+                    alt={`${car.brand} ${car.model}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
                 {/* Car Info */}
@@ -234,11 +251,15 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                 <span className="text-sm font-medium">
                   {comparing.size} خودرو انتخاب شده برای مقایسه
                 </span>
-                <button className="btn-primary text-sm px-4 py-2">
+                <button 
+                  onClick={() => setShowCompareModal(true)}
+                  disabled={comparing.size < 2}
+                  className="btn-primary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   مقایسه
                 </button>
                 <button
-                  onClick={() => setComparing(new Set())}
+                  onClick={clearComparison}
                   className="text-sm text-muted-foreground hover:text-destructive"
                 >
                   پاک کردن
@@ -246,6 +267,102 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               </div>
             </div>
           )}
+
+          {/* Compare Modal */}
+          <Dialog open={showCompareModal} onOpenChange={setShowCompareModal}>
+            <DialogContent className="max-w-6xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <div className="flex items-center justify-between">
+                  <DialogTitle>مقایسه خودروها</DialogTitle>
+                  <button
+                    onClick={clearComparison}
+                    className="text-sm text-destructive hover:text-destructive/80"
+                  >
+                    پاک کردن همه
+                  </button>
+                </div>
+              </DialogHeader>
+              
+              <div className="mt-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-right">مشخصات</TableHead>
+                      {getComparingCars().map(car => (
+                        <TableHead key={car.id} className="text-center min-w-[200px]">
+                          <div className="space-y-2">
+                            <img 
+                              src={car.image} 
+                              alt={`${car.brand} ${car.model}`}
+                              className="w-full h-24 object-cover rounded-lg"
+                            />
+                            <div className="text-sm font-medium">{car.brand} {car.model}</div>
+                            <button
+                              onClick={() => toggleCompare(car.id)}
+                              className="text-xs text-destructive hover:text-destructive/80"
+                            >
+                              <X className="w-4 h-4 mx-auto" />
+                            </button>
+                          </div>
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="font-medium">قیمت</TableCell>
+                      {getComparingCars().map(car => (
+                        <TableCell key={car.id} className="text-center persian-numbers">
+                          {formatPrice(car.price)} تومان
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">سال ساخت</TableCell>
+                      {getComparingCars().map(car => (
+                        <TableCell key={car.id} className="text-center persian-numbers">
+                          {car.year}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">کارکرد</TableCell>
+                      {getComparingCars().map(car => (
+                        <TableCell key={car.id} className="text-center persian-numbers">
+                          {formatMileage(car.mileage)} کیلومتر
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">مابه‌التفاوت</TableCell>
+                      {getComparingCars().map(car => (
+                        <TableCell key={car.id} className="text-center">
+                          <span className={`font-bold persian-numbers ${
+                            car.difference > 0 ? 'text-destructive' : 'text-success'
+                          }`}>
+                            {car.difference > 0 ? '+' : ''}{formatPrice(Math.abs(car.difference))} تومان
+                          </span>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">عملیات</TableCell>
+                      {getComparingCars().map(car => (
+                        <TableCell key={car.id} className="text-center">
+                          <button
+                            onClick={() => onCarSelect(car.id)}
+                            className="btn-primary text-sm px-3 py-2"
+                          >
+                            مشاهده جزئیات
+                          </button>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

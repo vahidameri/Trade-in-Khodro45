@@ -8,55 +8,55 @@
 
 @layer base {
   :root {
-    /* Persian Car Exchange Color Palette */
-    --background: 0 0% 97%;
-    --foreground: 218 27% 19%;
+    /* Persian Car Exchange Color Palette - Updated to exact colors */
+    --background: 0 0% 100%;
+    --foreground: 216 13% 19%;
 
     --card: 0 0% 100%;
-    --card-foreground: 218 27% 19%;
+    --card-foreground: 216 13% 19%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 218 27% 19%;
+    --popover-foreground: 216 13% 19%;
 
-    /* Primary Orange */
-    --primary: 25 100% 59%;
+    /* Primary Orange #FF9533 */
+    --primary: 25 100% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 25 100% 54%;
+    --primary-hover: 25 100% 55%;
 
-    /* Dark Gray */
-    --secondary: 218 27% 19%;
+    /* Dark Gray #282A32 */
+    --secondary: 216 13% 19%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Light Gray */
-    --muted: 216 13% 40%;
-    --muted-foreground: 0 0% 95%;
+    /* Light Gray #424653 */
+    --muted: 213 9% 32%;
+    --muted-foreground: 0 0% 80%;
 
     /* Very Light Gray */
-    --accent: 214 20% 96%;
-    --accent-foreground: 218 27% 19%;
+    --accent: 213 9% 32%;
+    --accent-foreground: 0 0% 100%;
 
     /* Success Green */
-    --success: 145 63% 42%;
+    --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
     /* Danger Red */
-    --destructive: 4 90% 58%;
+    --destructive: 0 84% 56%;
     --destructive-foreground: 0 0% 100%;
 
     /* Border and Input */
-    --border: 214 20% 90%;
-    --input: 214 20% 96%;
-    --ring: 25 100% 59%;
+    --border: 215 14% 89%;
+    --input: 215 14% 89%;
+    --ring: 25 100% 60%;
 
     /* Car Condition Colors */
     --damage-minor: 214 100% 77%;
-    --damage-paint: 25 100% 59%;
-    --damage-replace: 4 90% 58%;
-    --damage-healthy: 145 63% 42%;
+    --damage-paint: 25 100% 60%;
+    --damage-replace: 0 84% 56%;
+    --damage-healthy: 142 71% 45%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(25 100% 59%), hsl(25 100% 54%));
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(214 20% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(25 100% 60%), hsl(25 100% 55%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(215 14% 98%));
 
     --radius: 0.75rem;
 
@@ -78,33 +78,33 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 216 13% 19%;
+    --foreground: 0 0% 100%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 216 13% 19%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 216 13% 19%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 25 100% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 213 9% 32%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 213 9% 26%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 213 9% 32%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 56%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 213 9% 32%;
+    --input: 213 9% 32%;
+    --ring: 25 100% 60%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

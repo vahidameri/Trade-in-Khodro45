@@ -5,6 +5,7 @@ import { Step1CarSpecs } from './steps/Step1CarSpecs';
 import { Step2CarCondition } from './steps/Step2CarCondition';
 import { Step3Exchange } from './steps/Step3Exchange';
 import { CarSpecifications, CarCondition, CarData } from '../types/car';
+import logo from '../assets/logo.png';
 
 const steps = [
   { id: 1, title: 'مشخصات خودرو', subtitle: 'اطلاعات پایه' },
@@ -72,9 +73,7 @@ export const CarExchangePlatform = () => {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-primary/10 rounded-xl">
-                <Car className="w-8 h-8 text-primary" />
-              </div>
+              <img src={logo} alt="خودرو۴۵" className="w-12 h-12" />
               <div>
                 <h1 className="text-2xl font-bold text-foreground">خودرو۴۵</h1>
                 <p className="text-sm text-muted-foreground">پلتفرم معاوضه خودرو</p>
