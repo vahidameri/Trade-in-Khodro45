@@ -1,4 +1,5 @@
 import { ArrowRight, CreditCard, Banknote, Calendar, Check } from 'lucide-react';
+import { formatPersianPrice } from '../../../lib/persianUtils';
 
 interface PaymentMethodProps {
   onMethodSelect: (method: 'cash' | 'installment') => void;
@@ -12,7 +13,7 @@ const installmentPlans = [
 ];
 
 export const PaymentMethod = ({ onMethodSelect, onBack }: PaymentMethodProps) => {
-  const formatPrice = (price: number) => price.toLocaleString('fa-IR');
+  const formatPrice = (price: number) => formatPersianPrice(price);
 
   return (
     <div className="space-y-8">
@@ -56,13 +57,13 @@ export const PaymentMethod = ({ onMethodSelect, onBack }: PaymentMethodProps) =>
             </div>
             <div className="flex items-center gap-3">
               <Check className="w-5 h-5 text-success" />
-              <span className="text-sm">تخفیف ویژه نقدی</span>
+              <span className="text-sm">گارانتی ۷ روزه سلامت خودرو</span>
             </div>
           </div>
 
           <div className="p-4 bg-success/5 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-success mb-1 persian-numbers">
+              <div className="text-2xl font-bold text-success mb-1">
                 {formatPrice(920000000)}
               </div>
               <div className="text-sm text-muted-foreground">تومان (نقدی)</div>
@@ -94,10 +95,10 @@ export const PaymentMethod = ({ onMethodSelect, onBack }: PaymentMethodProps) =>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Calendar className="w-4 h-4 text-primary" />
-                    <span className="font-medium persian-numbers">{plan.months} ماه</span>
+                    <span className="font-medium">{plan.months} ماه</span>
                   </div>
                   <div className="text-left">
-                    <div className="font-bold persian-numbers">{formatPrice(plan.monthlyPayment)}</div>
+                    <div className="font-bold">{formatPrice(plan.monthlyPayment)}</div>
                     <div className="text-xs text-muted-foreground">ماهیانه</div>
                   </div>
                 </div>
@@ -123,7 +124,7 @@ export const PaymentMethod = ({ onMethodSelect, onBack }: PaymentMethodProps) =>
           <div className="p-4 bg-primary/5 rounded-lg">
             <div className="text-center">
               <div className="text-lg font-bold text-primary mb-1">
-                از <span className="persian-numbers">{formatPrice(installmentPlans[2].monthlyPayment)}</span>
+                از <span>{formatPrice(installmentPlans[2].monthlyPayment)}</span>
               </div>
               <div className="text-sm text-muted-foreground">ماهیانه</div>
             </div>

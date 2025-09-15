@@ -1,5 +1,6 @@
 import { CheckCircle, XCircle, FileText, Shield, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import { formatPersianPrice } from '../../../lib/persianUtils';
 
 interface InspectionResultProps {
   onApproved: () => void;
@@ -10,7 +11,7 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
   const [inspectionStatus] = useState<'approved' | 'rejected' | 'pending'>('approved');
   const [showDetails, setShowDetails] = useState(false);
 
-  const formatPrice = (price: number) => price.toLocaleString('fa-IR');
+  const formatPrice = (price: number) => formatPersianPrice(price);
 
   const inspectionDetails = {
     originalOffer: 950000000,
@@ -39,8 +40,8 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
               ۱
             </div>
             <div>
-              <div className="font-medium">امضای قرارداد</div>
-              <div className="text-sm text-muted-foreground">امضای قرارداد رسمی معاوضه</div>
+              <div className="font-medium">مراجعه به شعبه</div>
+              <div className="text-sm text-muted-foreground">حضور در شعبه انتخابی برای بررسی</div>
             </div>
           </div>
           
@@ -49,14 +50,24 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
               ۲
             </div>
             <div>
-              <div className="font-medium">فعال‌سازی Escrow</div>
-              <div className="text-sm text-muted-foreground">حفاظت از منافع طرفین تا تکمیل معامله</div>
+              <div className="font-medium">کارشناسی و محاسبه دقیق قیمت خودرو</div>
+              <div className="text-sm text-muted-foreground">بررسی فنی و تعیین قیمت نهایی</div>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-success text-success-foreground rounded-full flex items-center justify-center text-sm font-bold">
               ۳
+            </div>
+            <div>
+              <div className="font-medium">ورود خودرو به فرایند فروش</div>
+              <div className="text-sm text-muted-foreground">شروع فرآیند معاوضه</div>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-success text-success-foreground rounded-full flex items-center justify-center text-sm font-bold">
+              ۴
             </div>
             <div>
               <div className="font-medium">انتقال سند</div>
@@ -66,22 +77,16 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
           
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-success text-success-foreground rounded-full flex items-center justify-center text-sm font-bold">
-              ۴
+              ۵
             </div>
             <div>
-              <div className="font-medium">تحویل خودرو جدید</div>
+              <div className="font-medium">تحویل خودروی جدید</div>
               <div className="text-sm text-muted-foreground">دریافت خودروی جایگزین</div>
             </div>
           </div>
         </div>
       </div>
 
-      <button
-        onClick={onApproved}
-        className="w-full btn-primary"
-      >
-        ادامه فرآیند معامله
-      </button>
     </div>
   );
 
@@ -103,17 +108,17 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
         <div className="space-y-4 mb-6">
           <div className="flex justify-between">
             <span className="text-muted-foreground">پیشنهاد اولیه:</span>
-            <span className="font-medium persian-numbers">{formatPrice(inspectionDetails.originalOffer)} تومان</span>
+            <span className="font-medium">{formatPrice(inspectionDetails.originalOffer)} تومان</span>
           </div>
           
           <div className="flex justify-between">
             <span className="text-muted-foreground">پیشنهاد تجدیدنظر شده:</span>
-            <span className="font-bold text-destructive persian-numbers">{formatPrice(inspectionDetails.revisedOffer)} تومان</span>
+            <span className="font-bold text-destructive">{formatPrice(inspectionDetails.revisedOffer)} تومان</span>
           </div>
           
           <div className="flex justify-between">
             <span className="text-muted-foreground">تفاوت:</span>
-            <span className="font-bold text-destructive persian-numbers">-{formatPrice(inspectionDetails.difference)} تومان</span>
+            <span className="font-bold text-destructive">-{formatPrice(inspectionDetails.difference)} تومان</span>
           </div>
         </div>
 
@@ -163,7 +168,6 @@ export const InspectionResult = ({ onApproved, onRejected }: InspectionResultPro
             <div className="font-medium text-foreground mb-1">در صورت عدم پذیرش:</div>
             <ul className="text-muted-foreground space-y-1">
               <li>• رزرو خودروی انتخابی آزاد خواهد شد</li>
-              <li>• خودروی شما وارد سیستم مزایده می‌شود</li>
               <li>• امکان انتخاب خودروی جایگزین جدید وجود دارد</li>
             </ul>
           </div>

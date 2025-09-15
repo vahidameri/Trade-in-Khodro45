@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Edit3, Car } from 'lucide-react';
 import { CarSpecifications, CarCondition } from '../../types/car';
+import { formatPersianMileage } from '../../lib/persianUtils';
 
 interface Step2CarConditionProps {
   carSpecs: CarSpecifications;
@@ -62,9 +63,6 @@ export const Step2CarCondition = ({ carSpecs, onComplete, onEditSpecs, initialDa
     onComplete(condition);
   };
 
-  const formatMileage = (mileage: number) => {
-    return mileage.toLocaleString('fa-IR');
-  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -97,7 +95,7 @@ export const Step2CarCondition = ({ carSpecs, onComplete, onEditSpecs, initialDa
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">سال ساخت:</span>
-                <span className="font-medium persian-numbers">{carSpecs.year}</span>
+                <span className="font-medium">{carSpecs.year}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">رنگ:</span>
@@ -105,7 +103,7 @@ export const Step2CarCondition = ({ carSpecs, onComplete, onEditSpecs, initialDa
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">کارکرد:</span>
-                <span className="font-medium persian-numbers">{formatMileage(carSpecs.mileage)} کیلومتر</span>
+                <span className="font-medium">{formatPersianMileage(carSpecs.mileage)} کیلومتر</span>
               </div>
             </div>
           </div>
@@ -232,17 +230,6 @@ export const Step2CarCondition = ({ carSpecs, onComplete, onEditSpecs, initialDa
                     </select>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="flex items-center space-x-3 space-x-reverse">
-                      <input
-                        type="checkbox"
-                        checked={condition.otherParts.isAuction || false}
-                        onChange={(e) => handleAuctionToggle(e.target.checked)}
-                        className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-primary"
-                      />
-                      <span className="text-sm font-medium text-foreground">مزایده‌ای</span>
-                    </label>
-                  </div>
                 </div>
               </div>
 

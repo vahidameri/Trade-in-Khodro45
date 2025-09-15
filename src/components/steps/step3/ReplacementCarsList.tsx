@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Edit3, Heart, BarChart3, Star, X } from 'lucide-react';
-import { CarData, ReplacementCar } from '../../../types/car';
+import { Heart, BarChart3, Edit3, Car, FilterX, Star, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
-import car1 from '../../../assets/car1.jpg';
-import car2 from '../../../assets/car2.jpg';
-import car3 from '../../../assets/car3.jpg';
+import { CarData, ReplacementCar } from '../../../types/car';
+import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
 
 interface ReplacementCarsListProps {
   userCar: CarData;
@@ -13,39 +11,19 @@ interface ReplacementCarsListProps {
   onCarSelect: (carId: string) => void;
 }
 
-const sampleCars: ReplacementCar[] = [
-  {
-    id: '1',
-    brand: 'پژو',
-    model: 'پژو ۲۰۸',
-    year: 1402,
-    price: 950000000,
-    mileage: 45000,
-    image: car1,
-    difference: 30000000,
-    hasOffer: true
-  },
-  {
-    id: '2',
-    brand: 'رنو',
-    model: 'رنو ساندرو',
-    year: 1401,
-    price: 880000000,
-    mileage: 52000,
-    image: car2,
-    difference: -40000000
-  },
-  {
-    id: '3',
-    brand: 'هیوندای',
-    model: 'هیوندای i20',
-    year: 1402,
-    price: 1020000000,
-    mileage: 38000,
-    image: car3,
-    difference: 100000000
-  }
-];
+const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
+  id: `car-${index + 1}`,
+  brand: ['پژو', 'سایپا', 'ایران خودرو', 'چری', 'کیا'][index % 5],
+  model: [`مدل ${index + 1}`, 'دنا', '206', 'تیگو', 'سراتو'][index % 5],
+  year: 1400 + (index % 4),
+  price: 850000000 + (index * 100000000),
+  mileage: 20000 + (index * 15000),
+  image: `/src/assets/car${(index % 3) + 1}.jpg`,
+  difference: 30000000 + (index * 10000000),
+  isFavorite: false,
+  isComparing: false,
+  hasOffer: index % 4 === 0
+}));
 
 export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: ReplacementCarsListProps) => {
   const [priceRange, setPriceRange] = useState([800000000, 1200000000]);

@@ -1,4 +1,10 @@
-import { ArrowRight, Star, Shield, Calendar } from 'lucide-react';
+import { ArrowRight, Calendar, Shield, Star } from 'lucide-react';
+import iranianCar1 from '../../../assets/iranian-car1.jpg';
+import iranianCar2 from '../../../assets/iranian-car2.jpg';
+import iranianCar3 from '../../../assets/iranian-car3.jpg';
+import iranianCar4 from '../../../assets/iranian-car4.jpg';
+import iranianCar5 from '../../../assets/iranian-car5.jpg';
+import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
 
 interface CarDetailsProps {
   carId: string;
@@ -26,7 +32,9 @@ const inspectionCategories = [
 ];
 
 export const CarDetails = ({ carId, onBack, onRequestPurchase }: CarDetailsProps) => {
-  const formatPrice = (price: number) => price.toLocaleString('fa-IR');
+  const formatPrice = (price: number) => formatPersianPrice(price);
+
+  const carImages = [iranianCar1, iranianCar2, iranianCar3, iranianCar4, iranianCar5, iranianCar1];
 
   return (
     <div className="space-y-8">
@@ -47,9 +55,13 @@ export const CarDetails = ({ carId, onBack, onRequestPurchase }: CarDetailsProps
           {/* Image Gallery */}
           <div className="car-card">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="aspect-video bg-accent rounded-lg flex items-center justify-center">
-                  <Star className="w-8 h-8 text-muted-foreground" />
+              {carImages.map((image, index) => (
+                <div key={index} className="aspect-video bg-accent rounded-lg overflow-hidden">
+                  <img 
+                    src={image} 
+                    alt={`تصویر خودرو ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               ))}
             </div>
@@ -69,11 +81,11 @@ export const CarDetails = ({ carId, onBack, onRequestPurchase }: CarDetailsProps
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">سال:</span>
-                <span className="font-medium persian-numbers">۱۴۰۲</span>
+                <span className="font-medium">۱۴۰۲</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">کارکرد:</span>
-                <span className="font-medium persian-numbers">۴۵,۰۰۰ کیلومتر</span>
+                <span className="font-medium">{formatPersianMileage(45000)} کیلومتر</span>
               </div>
             </div>
           </div>
@@ -151,20 +163,28 @@ export const CarDetails = ({ carId, onBack, onRequestPurchase }: CarDetailsProps
         {/* Status Card */}
         <div className="lg:col-span-1">
           <div className="car-card sticky top-6">
-            <h3 className="text-lg font-bold text-foreground mb-4">وضعیت خودرو</h3>
+            <h3 className="text-lg font-bold text-foreground mb-4">مشخصات خودرو</h3>
             
             <div className="space-y-4 mb-6">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">قیمت:</span>
-                <span className="font-bold text-foreground persian-numbers">{formatPrice(950000000)} تومان</span>
+                <span className="font-bold text-foreground">{formatPrice(950000000)} تومان</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">مابه‌التفاوت:</span>
-                <span className="font-bold text-destructive persian-numbers">+{formatPrice(30000000)} تومان</span>
+                <span className="font-bold text-destructive">+{formatPrice(30000000)} تومان</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">وضعیت:</span>
                 <span className="text-success font-medium">آماده تحویل</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">تاریخ کارشناسی:</span>
+                <span className="font-medium">۱۴۰۳/۰۶/۱۵</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">نمره کارشناسی:</span>
+                <span className="font-bold text-success">۴.۵/۵</span>
               </div>
             </div>
 

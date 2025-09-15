@@ -1,5 +1,6 @@
 import { ArrowRight, Clock, AlertTriangle, Check } from 'lucide-react';
 import { CarData } from '../../../types/car';
+import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
 
 interface FinalOfferProps {
   carData: CarData;
@@ -10,7 +11,7 @@ interface FinalOfferProps {
 }
 
 export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, onBack }: FinalOfferProps) => {
-  const formatPrice = (price: number) => price.toLocaleString('fa-IR');
+  const formatPrice = (price: number) => formatPersianPrice(price);
 
   const currentCarValue = 880000000;
   const replacementCarPrice = 950000000;
@@ -37,19 +38,19 @@ export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, o
           <div className="space-y-4">
             <div className="flex justify-between items-center p-4 bg-accent rounded-lg">
               <span className="font-medium">ارزش خودروی فعلی شما:</span>
-              <span className="font-bold text-success persian-numbers">{formatPrice(currentCarValue)} تومان</span>
+              <span className="font-bold text-success">{formatPrice(currentCarValue)} تومان</span>
             </div>
             
             <div className="flex justify-between items-center p-4 bg-accent rounded-lg">
               <span className="font-medium">قیمت خودروی جایگزین:</span>
-              <span className="font-bold text-foreground persian-numbers">{formatPrice(replacementCarPrice)} تومان</span>
+              <span className="font-bold text-foreground">{formatPrice(replacementCarPrice)} تومان</span>
             </div>
             
             <div className="h-px bg-border"></div>
             
             <div className="flex justify-between items-center p-4 bg-primary/5 rounded-lg">
               <span className="font-bold text-lg">مابه‌التفاوت قابل پرداخت:</span>
-              <span className="font-bold text-xl text-primary persian-numbers">
+              <span className="font-bold text-xl text-primary">
                 {formatPrice(difference)} تومان
               </span>
             </div>
@@ -70,7 +71,7 @@ export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, o
             
             {paymentMethod === 'installment' && (
               <div className="mt-3 text-sm text-muted-foreground">
-                قسط ماهیانه: <span className="persian-numbers">۱,۰۵۰,۰۰۰ تومان</span> به مدت ۳۶ ماه
+                قسط ماهیانه: <span>{formatPrice(1050000)} تومان</span> به مدت ۳۶ ماه
               </div>
             )}
           </div>
@@ -101,15 +102,6 @@ export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, o
               </div>
             </div>
             
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-destructive mt-0.5" />
-              <div>
-                <div className="font-medium text-foreground">در صورت عدم تایید</div>
-                <div className="text-sm text-muted-foreground mt-1">
-                  خودروی شما وارد سیستم مزایده خواهد شد
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -124,11 +116,11 @@ export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, o
               </div>
               <div className="flex justify-between">
                 <span>سال:</span>
-                <span className="persian-numbers">{carData.specifications.year}</span>
+                <span>{carData.specifications.year}</span>
               </div>
               <div className="flex justify-between">
                 <span>کارکرد:</span>
-                <span className="persian-numbers">{carData.specifications.mileage.toLocaleString('fa-IR')} کیلومتر</span>
+                <span>{formatPersianMileage(carData.specifications.mileage)} کیلومتر</span>
               </div>
             </div>
           </div>
@@ -142,11 +134,11 @@ export const FinalOffer = ({ carData, selectedCarId, paymentMethod, onConfirm, o
               </div>
               <div className="flex justify-between">
                 <span>سال:</span>
-                <span className="persian-numbers">۱۴۰۲</span>
+                <span>۱۴۰۲</span>
               </div>
               <div className="flex justify-between">
                 <span>کارکرد:</span>
-                <span className="persian-numbers">۴۵,۰۰۰ کیلومتر</span>
+                <span>{formatPersianMileage(45000)} کیلومتر</span>
               </div>
             </div>
           </div>

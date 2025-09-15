@@ -1,5 +1,6 @@
 import { Edit3, Car, Shield, Clock, CheckCircle } from 'lucide-react';
 import { CarData } from '../../../types/car';
+import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
 
 interface PriceEstimationProps {
   carData: CarData;
@@ -9,13 +10,6 @@ interface PriceEstimationProps {
 }
 
 export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onRequestExchange }: PriceEstimationProps) => {
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('fa-IR');
-  };
-
-  const formatMileage = (mileage: number) => {
-    return mileage.toLocaleString('fa-IR');
-  };
 
   const getDamageColor = (damageType: string) => {
     switch (damageType) {
@@ -79,7 +73,7 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">سال ساخت:</span>
-              <span className="font-medium persian-numbers">{carData.specifications.year}</span>
+              <span className="font-medium">{carData.specifications.year}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">رنگ:</span>
@@ -87,7 +81,7 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">کارکرد:</span>
-              <span className="font-medium persian-numbers">{formatMileage(carData.specifications.mileage)} کیلومتر</span>
+              <span className="font-medium">{formatPersianMileage(carData.specifications.mileage)} کیلومتر</span>
             </div>
           </div>
         </div>
@@ -95,7 +89,7 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
         {/* Car Condition Card */}
         <div className="car-card">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground">وضعیت خودرو (بلوپرینت)</h3>
+            <h3 className="text-lg font-bold text-foreground">وضعیت خودرو</h3>
             <button
               onClick={onEditCondition}
               className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
@@ -104,11 +98,13 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
             </button>
           </div>
 
-          {/* Car Schematic Placeholder */}
+          {/* Car Condition Image */}
           <div className="bg-accent rounded-xl p-6 mb-4">
-            <div className="w-full h-32 bg-background rounded-lg border-2 border-dashed border-border flex items-center justify-center">
-              <Car className="w-12 h-12 text-muted-foreground" />
-            </div>
+            <img 
+              src="user-uploads://images.png" 
+              alt="وضعیت خودرو"
+              className="w-full h-32 object-contain rounded-lg"
+            />
           </div>
 
           {/* Damage Legend */}
@@ -156,20 +152,20 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
 
         {/* Car45 Offer Card */}
         <div className="car-card bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-          <h3 className="text-lg font-bold text-foreground mb-4">پیشنهاد خودرو۴۵</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">قیمت تخمینی خودروی شما</h3>
           
           {/* Price Range Bar */}
           <div className="mb-6">
             <div className="relative h-16 bg-border rounded-xl overflow-hidden">
               {/* Min Price (Right side in RTL) */}
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-muted-foreground">
-                <div className="persian-numbers">{formatPrice(estimatedPrice.min)}</div>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-foreground">
+                <div>{formatPersianPrice(estimatedPrice.min)}</div>
                 <div className="text-xs">حداقل</div>
               </div>
               
               {/* Max Price (Left side in RTL) */}
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-muted-foreground">
-                <div className="persian-numbers">{formatPrice(estimatedPrice.max)}</div>
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-foreground">
+                <div>{formatPersianPrice(estimatedPrice.max)}</div>
                 <div className="text-xs">حداکثر</div>
               </div>
               
@@ -177,8 +173,8 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
               <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 mx-20 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <div className="text-center text-white">
                   <div className="text-xs font-medium">قیمت تخمینی خودروی شما</div>
-                  <div className="text-sm font-bold persian-numbers">
-                    {formatPrice(Math.round((estimatedPrice.min + estimatedPrice.max) / 2))} تومان
+                  <div className="text-sm font-bold">
+                    {formatPersianPrice(Math.round((estimatedPrice.min + estimatedPrice.max) / 2))} تومان
                   </div>
                 </div>
               </div>
