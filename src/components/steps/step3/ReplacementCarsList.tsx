@@ -7,12 +7,17 @@ import { Slider } from '../../ui/slider';
 import { CarData, ReplacementCar } from '../../../types/car';
 import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
 import carNew1 from '../../../assets/car-new-1.jpg';
+import carNew2 from '../../../assets/car-new-2.jpg';
+import carNew3 from '../../../assets/car-new-3.jpg';
+import carNew4 from '../../../assets/car-new-4.jpg';
 
 interface ReplacementCarsListProps {
   userCar: CarData;
   onEditInfo: () => void;
   onCarSelect: (carId: string) => void;
 }
+
+const carImages = [carNew1, carNew2, carNew3, carNew4];
 
 const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
   id: `car-${index + 1}`,
@@ -21,7 +26,7 @@ const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
   year: 1400 + (index % 4),
   price: 850000000 + (index * 100000000),
   mileage: 20000 + (index * 15000),
-  image: `/src/assets/car-new-${(index % 4) + 1}.jpg`,
+  image: carImages[index % 4],
   difference: 30000000 + (index * 10000000),
   isFavorite: false,
   isComparing: false,
@@ -196,8 +201,8 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">محدوده قیمت</label>
                 <div className="space-y-3">
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span className="persian-numbers">حداکثر: {formatPersianPrice(priceRange[1])}</span>
                     <span className="persian-numbers">حداقل: {formatPersianPrice(priceRange[0])}</span>
+                    <span className="persian-numbers">حداکثر: {formatPersianPrice(priceRange[1])}</span>
                   </div>
                   <div className="px-2">
                     <Slider

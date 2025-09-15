@@ -8,15 +8,15 @@
 
 @layer base {
   :root {
-    /* Persian Car Exchange Color Palette - Updated to exact colors */
+    /* Persian Car Exchange Color Palette - Fixed HSL Colors */
     --background: 0 0% 100%;
-    --foreground: 216 13% 19%;
+    --foreground: 215 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 216 13% 19%;
+    --card-foreground: 215 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 216 13% 19%;
+    --popover-foreground: 215 15% 15%;
 
     /* Primary Orange #FF9533 */
     --primary: 25 100% 60%;
@@ -27,13 +27,13 @@
     --secondary: 216 13% 19%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Light Gray #424653 */
-    --muted: 213 9% 32%;
-    --muted-foreground: 0 0% 80%;
+    /* Light Gray backgrounds */
+    --muted: 210 10% 96%;
+    --muted-foreground: 215 15% 45%;
 
-    /* Very Light Gray */
-    --accent: 213 9% 32%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent colors */
+    --accent: 210 10% 96%;
+    --accent-foreground: 215 15% 15%;
 
     /* Success Green */
     --success: 142 71% 45%;
@@ -79,13 +79,13 @@
 
   .dark {
     --background: 216 13% 19%;
-    --foreground: 0 0% 100%;
+    --foreground: 0 0% 95%;
 
-    --card: 216 13% 19%;
-    --card-foreground: 0 0% 100%;
+    --card: 216 13% 22%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 216 13% 19%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 216 13% 22%;
+    --popover-foreground: 0 0% 95%;
 
     --primary: 25 100% 60%;
     --primary-foreground: 0 0% 100%;
@@ -96,8 +96,8 @@
     --muted: 213 9% 26%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 213 9% 32%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 213 9% 28%;
+    --accent-foreground: 0 0% 95%;
 
     --destructive: 0 84% 56%;
     --destructive-foreground: 0 0% 100%;
