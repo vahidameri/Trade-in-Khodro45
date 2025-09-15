@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Slider } from '../../ui/slider';
 import { CarData, ReplacementCar } from '../../../types/car';
 import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
-import iranianCar1 from '../../../assets/iranian-car1.jpg';
+import carNew1 from '../../../assets/car-new-1.jpg';
 
 interface ReplacementCarsListProps {
   userCar: CarData;
@@ -21,7 +21,7 @@ const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
   year: 1400 + (index % 4),
   price: 850000000 + (index * 100000000),
   mileage: 20000 + (index * 15000),
-  image: `/src/assets/iranian-car${(index % 5) + 1}.jpg`,
+  image: `/src/assets/car-new-${(index % 4) + 1}.jpg`,
   difference: 30000000 + (index * 10000000),
   isFavorite: false,
   isComparing: false,
@@ -44,6 +44,26 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
 
   const formatPrice = (price: number) => formatPersianPrice(price);
   const formatMileage = (mileage: number) => formatPersianMileage(mileage);
+
+  // Brand to model mapping
+  const brandModelMap = {
+    'پژو': ['206', '207', 'پارس', '405'],
+    'سایپا': ['پراید', 'تیبا', 'ساینا', 'کوئیک'],
+    'ایران خودرو': ['دنا', 'سمند', 'رانا', 'تارا'],
+    'چری': ['تیگو', 'آریزو', 'تیگو 7', 'تیگو 8'],
+    'کیا': ['سراتو', 'اپتیما', 'سورنتو', 'اسپورتیج']
+  };
+
+  const getAvailableModels = () => {
+    if (!selectedBrand) return [];
+    return brandModelMap[selectedBrand as keyof typeof brandModelMap] || [];
+  };
+
+  const handleBrandChange = (value: string) => {
+    setSelectedBrand(value);
+    setSelectedModel(''); // Reset model when brand changes
+    handleFilterChange();
+  };
 
   const handleFilterChange = () => {
     setHasFiltersChanged(true);
@@ -138,7 +158,7 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
           {/* Car Image */}
           <div className="mb-4">
             <img 
-              src={iranianCar1} 
+              src={carNew1} 
               alt="خودروی شما"
               className="w-full h-32 object-cover rounded-xl"
             />
@@ -171,13 +191,13 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
             <h3 className="text-lg font-bold text-foreground mb-6">فیلترها</h3>
             
             <div className="space-y-6">
-              {/* Price Range Filter - RTL Aligned */}
+              {/* Price Range Filter - Proper RTL Implementation */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">محدوده قیمت</label>
                 <div className="space-y-3">
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>{formatPersianPrice(priceRange[1])}</span>
-                    <span>{formatPersianPrice(priceRange[0])}</span>
+                    <span className="persian-numbers">حداکثر: {formatPersianPrice(priceRange[1])}</span>
+                    <span className="persian-numbers">حداقل: {formatPersianPrice(priceRange[0])}</span>
                   </div>
                   <div className="px-2">
                     <Slider
@@ -189,8 +209,7 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                       min={userCarEstimatedPrice + 50000000}
                       max={5000000000}
                       step={50000000}
-                      className="w-full"
-                      dir="rtl"
+                      className="w-full [&>span:first-child]:!flex-row-reverse"
                     />
                   </div>
                 </div>
@@ -199,38 +218,40 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               {/* Brand Filter */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">برند</label>
-                <Select value={selectedBrand} onValueChange={(value) => {
-                  setSelectedBrand(value);
-                  handleFilterChange();
-                }}>
+                <Select value={selectedBrand} onValueChange={handleBrandChange}>
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب برند" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ایران‌خودرو">ایران‌خودرو</SelectItem>
-                    <SelectItem value="سایپا">سایپا</SelectItem>
-                    <SelectItem value="پارس‌خودرو">پارس‌خودرو</SelectItem>
-                    <SelectItem value="مدیران‌خودرو">مدیران‌خودرو</SelectItem>
+                  <SelectContent className="dropdown-content">
+                    <SelectItem value="پژو" className="dropdown-item">پژو</SelectItem>
+                    <SelectItem value="سایپا" className="dropdown-item">سایپا</SelectItem>
+                    <SelectItem value="ایران خودرو" className="dropdown-item">ایران خودرو</SelectItem>
+                    <SelectItem value="چری" className="dropdown-item">چری</SelectItem>
+                    <SelectItem value="کیا" className="dropdown-item">کیا</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Model Filter */}
+              {/* Model Filter - Dependent on Brand */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">مدل</label>
-                <Select value={selectedModel} onValueChange={(value) => {
-                  setSelectedModel(value);
-                  handleFilterChange();
-                }}>
+                <Select 
+                  value={selectedModel} 
+                  onValueChange={(value) => {
+                    setSelectedModel(value);
+                    handleFilterChange();
+                  }}
+                  disabled={!selectedBrand}
+                >
                   <SelectTrigger className="w-full text-right">
-                    <SelectValue placeholder="انتخاب مدل" />
+                    <SelectValue placeholder={selectedBrand ? "انتخاب مدل" : "ابتدا برند را انتخاب کنید"} />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="پژو ۲۰۶">پژو ۲۰۶</SelectItem>
-                    <SelectItem value="پژو ۲۰۷">پژو ۲۰۷</SelectItem>
-                    <SelectItem value="پژو پارس">پژو پارس</SelectItem>
-                    <SelectItem value="سمند">سمند</SelectItem>
-                    <SelectItem value="دنا">دنا</SelectItem>
+                  <SelectContent className="dropdown-content">
+                    {getAvailableModels().map(model => (
+                      <SelectItem key={model} value={model} className="dropdown-item">
+                        {model}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -245,12 +266,12 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب رنگ" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="سفید">سفید</SelectItem>
-                    <SelectItem value="مشکی">مشکی</SelectItem>
-                    <SelectItem value="نقره‌ای">نقره‌ای</SelectItem>
-                    <SelectItem value="قرمز">قرمز</SelectItem>
-                    <SelectItem value="آبی">آبی</SelectItem>
+                  <SelectContent className="dropdown-content">
+                    <SelectItem value="سفید" className="dropdown-item">سفید</SelectItem>
+                    <SelectItem value="مشکی" className="dropdown-item">مشکی</SelectItem>
+                    <SelectItem value="نقره‌ای" className="dropdown-item">نقره‌ای</SelectItem>
+                    <SelectItem value="قرمز" className="dropdown-item">قرمز</SelectItem>
+                    <SelectItem value="آبی" className="dropdown-item">آبی</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -265,12 +286,12 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب شهر" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="تهران">تهران</SelectItem>
-                    <SelectItem value="اصفهان">اصفهان</SelectItem>
-                    <SelectItem value="مشهد">مشهد</SelectItem>
-                    <SelectItem value="شیراز">شیراز</SelectItem>
-                    <SelectItem value="تبریز">تبریز</SelectItem>
+                  <SelectContent className="dropdown-content">
+                    <SelectItem value="تهران" className="dropdown-item">تهران</SelectItem>
+                    <SelectItem value="اصفهان" className="dropdown-item">اصفهان</SelectItem>
+                    <SelectItem value="مشهد" className="dropdown-item">مشهد</SelectItem>
+                    <SelectItem value="شیراز" className="dropdown-item">شیراز</SelectItem>
+                    <SelectItem value="تبریز" className="dropdown-item">تبریز</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -387,7 +408,7 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
           {comparing.size > 0 && (
             <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-card border border-border rounded-xl shadow-lg p-4 z-50">
               <div className="flex items-center gap-4">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium persian-numbers">
                   {comparing.size} خودرو انتخاب شده برای مقایسه
                 </span>
                 <button 

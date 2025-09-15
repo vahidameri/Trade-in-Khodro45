@@ -228,11 +228,71 @@
   text-align: right;
 }
 
+/* RTL Slider Styles */
+.slider-root[data-orientation="horizontal"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+  direction: ltr !important;
+}
+
+.slider-track[data-orientation="horizontal"] {
+  background-color: hsl(var(--muted));
+  position: relative;
+  height: 4px;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.slider-range[data-orientation="horizontal"] {
+  position: absolute;
+  background-color: hsl(var(--primary));
+  border-radius: inherit;
+  height: 100%;
+}
+
+.slider-thumb[data-orientation="horizontal"] {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--primary));
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-thumb:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.2);
+}
+
 /* Persian number display */
 .persian-numbers {
   font-feature-settings: "tnum" on, "lnum" on;
   direction: ltr;
   unicode-bidi: embed;
+}
+
+/* Fix dropdown backgrounds and text colors */
+[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}
+
+.dropdown-content {
+  background-color: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+.dropdown-item {
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+.dropdown-item:hover {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
 }
 
   .car-card:hover {
