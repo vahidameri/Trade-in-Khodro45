@@ -177,9 +177,51 @@
     @apply border-success bg-success text-success-foreground;
   }
 
-  .car-card {
-    @apply bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
-  }
+/* Car Cards */
+.car-card {
+  @apply bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
+  color: hsl(var(--card-foreground));
+}
+
+/* Color scheme fixes */
+.car-card .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.car-card .text-foreground {
+  color: hsl(var(--card-foreground));
+}
+
+/* Dark background should have light text */
+[data-theme="dark"] .car-card,
+.dark .car-card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
+/* Light background should have dark text */
+.bg-background {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Ensure proper contrast for text on white/light backgrounds */
+.bg-card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
+/* Fix select components RTL alignment */
+[dir="rtl"] .select-trigger {
+  text-align: right;
+}
+
+/* Persian number display */
+.persian-numbers {
+  font-feature-settings: "tnum" on, "lnum" on;
+  direction: ltr;
+  unicode-bidi: embed;
+}
 
   .car-card:hover {
     @apply border-primary/20 shadow-lg;

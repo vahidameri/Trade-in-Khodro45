@@ -101,7 +101,7 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
           {/* Car Condition Image */}
           <div className="bg-accent rounded-xl p-6 mb-4">
             <img 
-              src="user-uploads://images.png" 
+              src="/src/assets/car-diagram.webp" 
               alt="وضعیت خودرو"
               className="w-full h-32 object-contain rounded-lg"
             />

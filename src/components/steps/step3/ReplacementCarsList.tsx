@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { Heart, BarChart3, Edit3, Car, FilterX, Star, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
+import { Slider } from '../../ui/slider';
 import { CarData, ReplacementCar } from '../../../types/car';
 import { formatPersianPrice, formatPersianMileage } from '../../../lib/persianUtils';
+import iranianCar1 from '../../../assets/iranian-car1.jpg';
 
 interface ReplacementCarsListProps {
   userCar: CarData;
@@ -26,8 +29,12 @@ const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
 }));
 
 export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: ReplacementCarsListProps) => {
-  const [priceRange, setPriceRange] = useState([800000000, 1200000000]);
+  const userCarEstimatedPrice = 900000000; // User's car estimated price
+  const [priceRange, setPriceRange] = useState([userCarEstimatedPrice + 50000000, 5000000000]); // User price + 50M to 5B
   const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [comparing, setComparing] = useState<Set<string>>(new Set());
   const [showCompareModal, setShowCompareModal] = useState(false);
@@ -74,21 +81,44 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
       <div className="flex items-center justify-between">
         <div className="car-card flex-1 max-w-md">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground">خودروی شما</h3>
+            {/* Large Bold Header: Year, Brand, Model */}
+            <div>
+              <h3 className="text-xl font-bold text-foreground">
+                {userCar.specifications.year} {userCar.specifications.brand} {userCar.specifications.model}
+              </h3>
+            </div>
             <button
               onClick={onEditInfo}
-              className="btn-outline text-sm"
+              className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
             >
-              ویرایش اطلاعات
+              <Edit3 className="w-4 h-4" />
             </button>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-accent rounded-lg flex items-center justify-center">
-              <Star className="w-8 h-8 text-muted-foreground" />
+          
+          {/* Car Image */}
+          <div className="mb-4">
+            <img 
+              src={iranianCar1} 
+              alt="خودروی شما"
+              className="w-full h-32 object-cover rounded-xl"
+            />
+          </div>
+          
+          {/* Card Body: Color and Mileage */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">رنگ:</span>
+              <span className="font-medium text-foreground">{userCar.specifications.color}</span>
             </div>
-            <div>
-              <div className="font-medium">{userCar.specifications.brand} {userCar.specifications.model}</div>
-              <div className="text-sm text-muted-foreground persian-numbers">{userCar.specifications.year} • {formatMileage(userCar.specifications.mileage)} کیلومتر</div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">کارکرد:</span>
+              <span className="font-medium text-foreground">{formatPersianMileage(userCar.specifications.mileage)} کیلومتر</span>
+            </div>
+            <div className="mt-4 p-3 bg-primary/10 rounded-lg">
+              <div className="text-center">
+                <div className="text-xs text-muted-foreground">قیمت تخمینی</div>
+                <div className="text-lg font-bold text-primary">{formatPersianPrice(userCarEstimatedPrice)} تومان</div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,38 +131,92 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
             <h3 className="text-lg font-bold text-foreground mb-6">فیلترها</h3>
             
             <div className="space-y-6">
+              {/* Price Range Filter - RTL Aligned */}
               <div>
-                <label className="block text-sm font-medium text-foreground mb-3">بازه قیمتی</label>
+                <label className="block text-sm font-medium text-foreground mb-3 text-right">محدوده قیمت</label>
                 <div className="space-y-3">
-                  <input
-                    type="range"
-                    min="500000000"
-                    max="2000000000"
-                    step="10000000"
-                    value={priceRange[1]}
-                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-muted-foreground persian-numbers">
-                    <span>{formatPrice(priceRange[0])}</span>
-                    <span>{formatPrice(priceRange[1])}</span>
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>{formatPersianPrice(priceRange[1])}</span>
+                    <span>{formatPersianPrice(priceRange[0])}</span>
+                  </div>
+                  <div className="px-2">
+                    <Slider
+                      value={priceRange}
+                      onValueChange={setPriceRange}
+                      min={userCarEstimatedPrice + 50000000}
+                      max={5000000000}
+                      step={50000000}
+                      className="w-full"
+                    />
                   </div>
                 </div>
               </div>
 
+              {/* Brand Filter */}
               <div>
-                <label className="block text-sm font-medium text-foreground mb-3">انتخاب برند</label>
-                <select
-                  value={selectedBrand}
-                  onChange={(e) => setSelectedBrand(e.target.value)}
-                  className="w-full p-3 border border-border rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                >
-                  <option value="">همه برندها</option>
-                  <option value="پژو">پژو</option>
-                  <option value="رنو">رنو</option>
-                  <option value="هیوندای">هیوندای</option>
-                  <option value="کیا">کیا</option>
-                </select>
+                <label className="block text-sm font-medium text-foreground mb-3 text-right">برند</label>
+                <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                  <SelectTrigger className="w-full text-right">
+                    <SelectValue placeholder="انتخاب برند" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ایران‌خودرو">ایران‌خودرو</SelectItem>
+                    <SelectItem value="سایپا">سایپا</SelectItem>
+                    <SelectItem value="پارس‌خودرو">پارس‌خودرو</SelectItem>
+                    <SelectItem value="مدیران‌خودرو">مدیران‌خودرو</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Model Filter */}
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-3 text-right">مدل</label>
+                <Select value={selectedModel} onValueChange={setSelectedModel}>
+                  <SelectTrigger className="w-full text-right">
+                    <SelectValue placeholder="انتخاب مدل" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="پژو ۲۰۶">پژو ۲۰۶</SelectItem>
+                    <SelectItem value="پژو ۲۰۷">پژو ۲۰۷</SelectItem>
+                    <SelectItem value="پژو پارس">پژو پارس</SelectItem>
+                    <SelectItem value="سمند">سمند</SelectItem>
+                    <SelectItem value="دنا">دنا</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Color Filter */}
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-3 text-right">رنگ</label>
+                <Select value={selectedColor} onValueChange={setSelectedColor}>
+                  <SelectTrigger className="w-full text-right">
+                    <SelectValue placeholder="انتخاب رنگ" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="سفید">سفید</SelectItem>
+                    <SelectItem value="مشکی">مشکی</SelectItem>
+                    <SelectItem value="نقره‌ای">نقره‌ای</SelectItem>
+                    <SelectItem value="قرمز">قرمز</SelectItem>
+                    <SelectItem value="آبی">آبی</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* City Filter */}
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-3 text-right">شهر</label>
+                <Select value={selectedCity} onValueChange={setSelectedCity}>
+                  <SelectTrigger className="w-full text-right">
+                    <SelectValue placeholder="انتخاب شهر" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="تهران">تهران</SelectItem>
+                    <SelectItem value="اصفهان">اصفهان</SelectItem>
+                    <SelectItem value="مشهد">مشهد</SelectItem>
+                    <SelectItem value="شیراز">شیراز</SelectItem>
+                    <SelectItem value="تبریز">تبریز</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
