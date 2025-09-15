@@ -21,7 +21,7 @@ const sampleCars: ReplacementCar[] = Array.from({ length: 15 }, (_, index) => ({
   year: 1400 + (index % 4),
   price: 850000000 + (index * 100000000),
   mileage: 20000 + (index * 15000),
-  image: `/src/assets/car${(index % 3) + 1}.jpg`,
+  image: `/src/assets/iranian-car${(index % 5) + 1}.jpg`,
   difference: 30000000 + (index * 10000000),
   isFavorite: false,
   isComparing: false,
@@ -38,9 +38,49 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [comparing, setComparing] = useState<Set<string>>(new Set());
   const [showCompareModal, setShowCompareModal] = useState(false);
+  // Initialize with cars that have higher value than user's car (minimum 10 cars)
+  const [filteredCars, setFilteredCars] = useState(sampleCars.filter(car => car.difference > 0));
+  const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
 
-  const formatPrice = (price: number) => price.toLocaleString('fa-IR');
-  const formatMileage = (mileage: number) => mileage.toLocaleString('fa-IR');
+  const formatPrice = (price: number) => formatPersianPrice(price);
+  const formatMileage = (mileage: number) => formatPersianMileage(mileage);
+
+  const handleFilterChange = () => {
+    setHasFiltersChanged(true);
+  };
+
+  const applyFilters = () => {
+    let filtered = [...sampleCars];
+    
+    // Filter by price range
+    filtered = filtered.filter(car => car.price >= priceRange[0] && car.price <= priceRange[1]);
+    
+    // Filter by brand
+    if (selectedBrand) {
+      filtered = filtered.filter(car => car.brand === selectedBrand);
+    }
+    
+    // Filter by model  
+    if (selectedModel) {
+      filtered = filtered.filter(car => car.model === selectedModel);
+    }
+    
+    // Show only cars with higher price than user's car (as requested)
+    filtered = filtered.filter(car => car.difference > 0);
+    
+    setFilteredCars(filtered);
+    setHasFiltersChanged(false);
+  };
+
+  const resetFilters = () => {
+    setSelectedBrand('');
+    setSelectedModel('');
+    setSelectedColor('');
+    setSelectedCity('');
+    setPriceRange([userCarEstimatedPrice + 50000000, 5000000000]);
+    setFilteredCars(sampleCars.filter(car => car.difference > 0));
+    setHasFiltersChanged(false);
+  };
 
   const toggleFavorite = (carId: string) => {
     setFavorites(prev => {
@@ -142,11 +182,15 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                   <div className="px-2">
                     <Slider
                       value={priceRange}
-                      onValueChange={setPriceRange}
+                      onValueChange={(value) => {
+                        setPriceRange(value);
+                        handleFilterChange();
+                      }}
                       min={userCarEstimatedPrice + 50000000}
                       max={5000000000}
                       step={50000000}
                       className="w-full"
+                      dir="rtl"
                     />
                   </div>
                 </div>
@@ -155,7 +199,10 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               {/* Brand Filter */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">برند</label>
-                <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                <Select value={selectedBrand} onValueChange={(value) => {
+                  setSelectedBrand(value);
+                  handleFilterChange();
+                }}>
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب برند" />
                   </SelectTrigger>
@@ -171,7 +218,10 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               {/* Model Filter */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">مدل</label>
-                <Select value={selectedModel} onValueChange={setSelectedModel}>
+                <Select value={selectedModel} onValueChange={(value) => {
+                  setSelectedModel(value);
+                  handleFilterChange();
+                }}>
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب مدل" />
                   </SelectTrigger>
@@ -188,7 +238,10 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               {/* Color Filter */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">رنگ</label>
-                <Select value={selectedColor} onValueChange={setSelectedColor}>
+                <Select value={selectedColor} onValueChange={(value) => {
+                  setSelectedColor(value);
+                  handleFilterChange();
+                }}>
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب رنگ" />
                   </SelectTrigger>
@@ -205,7 +258,10 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
               {/* City Filter */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3 text-right">شهر</label>
-                <Select value={selectedCity} onValueChange={setSelectedCity}>
+                <Select value={selectedCity} onValueChange={(value) => {
+                  setSelectedCity(value);
+                  handleFilterChange();
+                }}>
                   <SelectTrigger className="w-full text-right">
                     <SelectValue placeholder="انتخاب شهر" />
                   </SelectTrigger>
@@ -218,14 +274,35 @@ export const ReplacementCarsList = ({ userCar, onEditInfo, onCarSelect }: Replac
                   </SelectContent>
                 </Select>
               </div>
+              
+              {/* Apply Filters Button */}
+              {hasFiltersChanged && (
+                <div className="pt-4 space-y-2">
+                  <button
+                    onClick={applyFilters}
+                    className="w-full btn-primary"
+                  >
+                    اعمال فیلتر
+                  </button>
+                  <button
+                    onClick={resetFilters}
+                    className="w-full btn-outline text-sm"
+                  >
+                    پاک کردن فیلترها
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Cars Grid */}
         <div className="lg:col-span-3">
+          <div className="mb-4 text-sm text-muted-foreground">
+            {filteredCars.length} خودرو یافت شد
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {sampleCars.map(car => (
+            {filteredCars.map(car => (
               <div key={car.id} className="car-card group cursor-pointer" onClick={() => onCarSelect(car.id)}>
                 {/* Car Image */}
                 <div className="aspect-video bg-accent rounded-lg mb-4 overflow-hidden">

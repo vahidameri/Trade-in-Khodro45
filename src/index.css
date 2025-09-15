@@ -180,35 +180,47 @@
 /* Car Cards */
 .car-card {
   @apply bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
-  color: hsl(var(--card-foreground));
-}
-
-/* Color scheme fixes */
-.car-card .text-muted-foreground {
-  color: hsl(var(--muted-foreground));
-}
-
-.car-card .text-foreground {
-  color: hsl(var(--card-foreground));
-}
-
-/* Dark background should have light text */
-[data-theme="dark"] .car-card,
-.dark .car-card {
   background-color: hsl(var(--card));
   color: hsl(var(--card-foreground));
 }
 
-/* Light background should have dark text */
+/* Ensure text colors are properly contrasted */
+.text-foreground {
+  color: hsl(var(--foreground)) !important;
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.text-card-foreground {
+  color: hsl(var(--card-foreground)) !important;
+}
+
+/* Background colors */
 .bg-background {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
 }
 
-/* Ensure proper contrast for text on white/light backgrounds */
 .bg-card {
-  background-color: hsl(var(--card));
-  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+}
+
+.bg-muted {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Dark mode overrides */
+.dark .text-foreground {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .bg-card {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
 }
 
 /* Fix select components RTL alignment */

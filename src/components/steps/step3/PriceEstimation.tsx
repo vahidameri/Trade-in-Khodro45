@@ -98,8 +98,7 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
             </button>
           </div>
 
-          {/* Car Condition Image */}
-          <div className="bg-accent rounded-xl p-6 mb-4">
+          <div className="bg-muted/20 rounded-xl p-6 mb-4">
             <img 
               src="/src/assets/car-diagram.webp" 
               alt="وضعیت خودرو"
@@ -156,24 +155,24 @@ export const PriceEstimation = ({ carData, onEditSpecs, onEditCondition, onReque
           
           {/* Price Range Bar */}
           <div className="mb-6">
-            <div className="relative h-16 bg-border rounded-xl overflow-hidden">
+            <div className="relative h-20 bg-muted/20 rounded-xl overflow-hidden">
               {/* Min Price (Right side in RTL) */}
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-foreground">
-                <div>{formatPersianPrice(estimatedPrice.min)}</div>
-                <div className="text-xs">حداقل</div>
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm font-medium bg-card rounded-lg p-2 shadow-sm">
+                <div className="text-foreground font-bold persian-numbers">{formatPersianPrice(estimatedPrice.min)}</div>
+                <div className="text-xs text-muted-foreground">حداقل</div>
               </div>
               
               {/* Max Price (Left side in RTL) */}
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm font-medium text-foreground">
-                <div>{formatPersianPrice(estimatedPrice.max)}</div>
-                <div className="text-xs">حداکثر</div>
+              <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-sm font-medium bg-card rounded-lg p-2 shadow-sm">
+                <div className="text-foreground font-bold persian-numbers">{formatPersianPrice(estimatedPrice.max)}</div>
+                <div className="text-xs text-muted-foreground">حداکثر</div>
               </div>
               
               {/* Center Orange Section */}
-              <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 mx-20 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <div className="text-center text-white">
+              <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 mx-24 h-12 bg-primary rounded-lg flex items-center justify-center shadow-lg">
+                <div className="text-center text-primary-foreground">
                   <div className="text-xs font-medium">قیمت تخمینی خودروی شما</div>
-                  <div className="text-sm font-bold">
+                  <div className="text-sm font-bold persian-numbers">
                     {formatPersianPrice(Math.round((estimatedPrice.min + estimatedPrice.max) / 2))} تومان
                   </div>
                 </div>
